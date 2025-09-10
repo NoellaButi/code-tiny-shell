@@ -1,19 +1,19 @@
-#define _GNU_SOURCE
-#include <errno.h>
-#include <limits.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
+# define _GNU_SOURCE
+# include <errno.h>
+# include <limits.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
-#define MAX_LINE 1024
-#define MAX_ARGS 128
+# define MAX_LINE 1024
+# define MAX_ARGS 128
 
 /* ---------- Aliases ---------- */
 struct Alias { char name[64]; char value[256]; };
@@ -120,31 +120,17 @@ static int run_builtin(char *argv[]) {
                 printf("alias %s='%s'\n", ALIASES[i].name, ALIASES[i].value);
             return 0;
         }
-
-        // Expect: alias name='value with spaces'
         char *eq = strchr(argv[1], '=');
         if (!eq) { fprintf(stderr, "usage: alias name='value'\n"); return 1; }
-
         *eq = '\0';
         char *name = argv[1];
-
-        // Rebuild value from eq+1 and any remaining argv pieces
-        char valbuf[256]; valbuf[0] = '\0';
-        strncat(valbuf, eq + 1, sizeof(valbuf) - 1);
-        for (int i = 2; argv[i]; i++) {
-            if (strlen(valbuf) + 1 < sizeof(valbuf))
-                strncat(valbuf, " ", sizeof(valbuf) - strlen(valbuf) - 1);
-            strncat(valbuf, argv[i], sizeof(valbuf) - strlen(valbuf) - 1);
+        char *val  = eq + 1;
+        size_t n = strlen(val);
+        if (n >= 2 && ((val[0]=='\'' && val[n-1]=='\'') || (val[0]=='"' && val[n-1]=='"'))) {
+            val[n-1] = '\0';
+            val++;
         }
-
-        // Strip outer quotes if present
-        size_t n = strlen(valbuf);
-        if (n >= 2 && ((valbuf[0]=='\'' && valbuf[n-1]=='\'') || (valbuf[0]=='"' && valbuf[n-1]=='"'))) {
-            valbuf[n-1] = '\0';
-            memmove(valbuf, valbuf+1, n-1);
-        }
-
-        alias_set(name, valbuf);
+        alias_set(name, val);
         return 0;
     }
 
