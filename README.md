@@ -1,6 +1,13 @@
 # Tiny Shell — mysh 🐚⚡
 Custom Unix-like Shell with Built-ins, Aliases, Pipes, and Redirection
 
+![GitHub repo size](https://img.shields.io/github/repo-size/NoellaButi/tiny-shell)
+![GitHub issues](https://img.shields.io/github/issues/NoellaButi/tiny-shell)
+![GitHub last commit](https://img.shields.io/github/last-commit/NoellaButi/tiny-shell)
+![GitHub license](https://img.shields.io/github/license/NoellaButi/tiny-shell)
+![GitHub top language](https://img.shields.io/github/languages/top/NoellaButi/tiny-shell?color=blue&logo=c)
+![Build with Make](https://img.shields.io/badge/build-Make-blue?logo=gnu)
+
 **Author:** Noëlla Buti
 
 ---
@@ -59,3 +66,4 @@ README.md → this overview
 MIT (see [LICENSE](LICENSE))
 
 ---
+
