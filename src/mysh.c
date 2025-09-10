@@ -1,16 +1,18 @@
-#define _GNU_SOURCE
-#include <errno.h>
-#include <limits.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
+# define _GNU_SOURCE
+# include <errno.h>
+# include <limits.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
-#define MAX_LINE 1024
-#define MAX_ARGS 128
+# define MAX_LINE 1024
+# define MAX_ARGS 128
 
 static void trim_newline(char *s) {
     size_t n = strlen(s);
@@ -82,10 +84,21 @@ int main(void) {
 
     while (1) {
         build_prompt(prompt, sizeof(prompt));
-        fputs(prompt, stdout); fflush(stdout);
-        if (!fgets(line, sizeof(line), stdin)) { puts(""); break; }
-        trim_newline(line);
-        if (!*line) continue;
+
+	// build readline instead of fgets
+	char *lineptr = readline(prompt);
+	if (!lineptr) { puts(""); break; }	// Ctrl D
+	if (*lineptr) add_history(lineptr);	// save non-empty commands to history
+
+	// copy into fixed buffer for parsing, then free
+	strncpy(line, lineptr, sizeof(line));
+	line[sizeof(line)-1] = '\0';
+	free(lineptr);
+
+	trim_newline(line);
+	if (!*line) continue;  // harmless even if no '\n'
+
+
 
         char *argv[MAX_ARGS];
         char tmp[MAX_LINE]; strncpy(tmp, line, sizeof(tmp)); tmp[sizeof(tmp)-1]='\0';
