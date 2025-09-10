@@ -29,42 +29,29 @@ The goal: demonstrate end-to-end mastery of process management, system calls, an
 ---
 
 ## 🚦 Demo
-```bash
-noella@host:/path/to/dir$mysh> alias ll='ls -la'
-noella@host:/path/to/dir$mysh> ll
-drwxrwxrwx  7 noella noella  4096 Sep 10 14:01 .
-drwxrwxrwx  3 noella noella  4096 Sep 10 13:13 ..
--rwxrwxrwx  1 noella noella   179 Sep 10 13:26 Makefile
-...
+Here’s a sample session showing off aliases, environment variables, pipes, and redirection:
 
-noella@host:/path/to/dir$mysh> export EDITOR=vim
-noella@host:/path/to/dir$mysh> env | grep EDITOR
-EDITOR=vim
-
-noella@host:/path/to/dir$mysh> echo hello | tr a-z A-Z
-HELLO
-```
+![Demo](docs/demo.png)
 
 ---
 
 ## 📁 Repository Layout
 ```bash
-src/        → main shell source (mysh.c)
-docs/       → design notes, screenshots, demo assets
-tests/      → sample scripts and test cases
-Makefile    → build rules (gcc + readline)
-README.md   → this overview
+src/ → main shell source (mysh.c)
+docs/ → design notes, screenshots, demo assets
+tests/ → sample scripts and test cases
+Makefile → build rules (gcc + readline)
+README.md → this overview
 ```
 ---
 
 ## 🔍 Features
-
-- Process Control: `fork/exec/wait` with error handling
-- Built-ins: `cd`, `pwd`, `exit`, `export`, `alias`, `unalias`, `which`
-- Configurable Startup: executes `~/.myshrc`
-- Aliases & Env Vars: custom shortcuts + exports
-- History & Editing: persistent readline navigation
-- Pipes & Redirection: connect programs & manage I/O
+- **Process Control**: fork/exec/wait with error handling  
+- **Built-ins**: `cd`, `pwd`, `exit`, `export`, `alias`, `unalias`, `which`  
+- **Configurable Startup**: executes `~/.myshrc`  
+- **Aliases & Env Vars**: custom shortcuts + exports  
+- **History & Editing**: persistent readline navigation  
+- **Pipes & Redirection**: connect programs & manage I/O  
 
 ---
 
@@ -72,4 +59,3 @@ README.md   → this overview
 MIT (see [LICENSE](LICENSE))
 
 ---
-
