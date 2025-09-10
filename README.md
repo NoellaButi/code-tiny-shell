@@ -69,6 +69,7 @@ README.md   → this overview
 ---
 
 ## 📜 License
-MIT (see LICENSE)
+MIT (see [LICENSE](LICENSE))
 
 ---
+
