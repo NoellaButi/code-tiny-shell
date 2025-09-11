@@ -1,12 +1,31 @@
 # Tiny Shell — mysh 🐚⚡
 Custom Unix-like Shell with Built-ins, Aliases, Pipes, and Redirection
 
-![GitHub repo size](https://img.shields.io/github/repo-size/NoellaButi/tiny-shell)
-![GitHub issues](https://img.shields.io/github/issues/NoellaButi/tiny-shell)
-![GitHub last commit](https://img.shields.io/github/last-commit/NoellaButi/tiny-shell)
-![GitHub license](https://img.shields.io/github/license/NoellaButi/tiny-shell)
-![GitHub top language](https://img.shields.io/github/languages/top/NoellaButi/tiny-shell?color=blue&logo=c)
-![Build with Make](https://img.shields.io/badge/build-Make-blue?logo=gnu)
+[![Language](https://img.shields.io/badge/language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))  
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)  
+[![Build](https://img.shields.io/badge/build-Makefile-orange.svg)](Makefile)  
+
+---
+
+✨ **Overview**  
+This project implements a lightweight shell (`mysh`) in C.  
+It started as an Operating Systems assignment and was extended into a practical developer tool.  
+
+It demonstrates mastery of:  
+- **Process control** (fork, execvp, wait)  
+- **System calls** (I/O, file descriptors)  
+- **User experience** (history, aliases, configs)  
+
+🛠️ **Workflow**  
+- Prompt: `user@host:cwd$mysh>` dynamic display  
+- Loop: read → parse → execute → re-prompt  
+- Built-ins: `cd`, `pwd`, `exit`, `export`, `alias`, `unalias`, `which`  
+- Config: loads `~/.myshrc` (aliases, exports, etc.)  
+- Environment: support for `export VAR=value`  
+- History & editing: via GNU Readline (`↑ ↓`, `Ctrl+R`)  
+- External commands: launched via `fork + execvp + wait`  
+- Pipes & redirection: `|`, `<`, `>`, `>>` across multiple stages  
+- Errors: descriptive messages (e.g., *No such directory*)  
 
 **Author:** Noëlla Buti
 
@@ -66,4 +85,5 @@ README.md → this overview
 MIT (see [LICENSE](LICENSE))
 
 ---
+
 
