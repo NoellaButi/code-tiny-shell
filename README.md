@@ -1,7 +1,9 @@
 # Tiny Shell — mysh 🐚⚡  
 Custom Unix-like Shell with Built-ins, Aliases, Pipes, and Redirection  
 
-![Language](https://img.shields.io/badge/language-C-blue.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg) ![Build](https://img.shields.io/badge/build-Makefile-orange.svg)  
+![Language](https://img.shields.io/badge/language-C-blue.svg) 
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg) 
+![Build](https://img.shields.io/badge/build-Makefile-orange.svg)  
 
 ---
 
@@ -67,3 +69,4 @@ MIT (see LICENSE)
 
 vbnet
 Copy code
+
