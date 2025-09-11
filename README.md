@@ -1,9 +1,7 @@
 # Tiny Shell — mysh 🐚⚡
 Custom Unix-like Shell with Built-ins, Aliases, Pipes, and Redirection
 
-[![Language](https://img.shields.io/badge/language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))  
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)  
-[![Build](https://img.shields.io/badge/build-Makefile-orange.svg)](Makefile)  
+![Language](https://img.shields.io/badge/language-C-blue.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg) ![Build](https://img.shields.io/badge/build-Makefile-orange.svg)  
 
 ---
 
@@ -85,5 +83,6 @@ README.md → this overview
 MIT (see [LICENSE](LICENSE))
 
 ---
+
 
 
