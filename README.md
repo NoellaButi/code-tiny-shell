@@ -68,3 +68,5 @@ mysh> which python
 📜 **License**
 
 MIT (see [LICENSE](LICENSE))
+
+---
