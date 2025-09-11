@@ -66,4 +66,5 @@ mysh> which python
 - Pipes and redirection
 
 📜 **License**
+
 MIT (see [LICENSE](LICENSE))
