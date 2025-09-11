@@ -34,39 +34,36 @@ docs/      # design notes, demo screenshots
 tests/     # sample scripts and test cases
 Makefile   # build rules (gcc + readline)
 README.md  # this overview
-🚦 Demo
+```
+
+🚦 **Demo**
+
 Build and run:
 
-bash
-Copy code
+```bash
 make
 ./mysh
+```
+
 Example session:
 
-bash
+```bash
 Copy code
 mysh> alias ll="ls -la"
 mysh> export PATH=$PATH:/usr/local/bin
 mysh> cat file.txt | grep "hello" > out.txt
 mysh> which python
 /usr/bin/python
-🔍 Features
+```
 
-Process Control: fork/exec/wait
+🔍 **Features**
 
-Built-ins: cd, pwd, exit, export, alias, unalias, which
+- Process Control: fork/exec/wait
+- Built-ins: cd, pwd, exit, export, alias, unalias, which
+- Configurable startup (~/.myshrc)
+- Aliases & env vars
+- Command history & navigation (Readline)
+- Pipes and redirection
 
-Configurable startup (~/.myshrc)
-
-Aliases & env vars
-
-Command history & navigation (Readline)
-
-Pipes and redirection
-
-📜 License
-MIT (see LICENSE)
-
-vbnet
-Copy code
-
+📜 **License**
+MIT (see [LICENSE](LICENSE))
