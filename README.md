@@ -3,7 +3,7 @@ Custom Unix-like Shell with Built-ins, Aliases, Pipes, and Redirection
 
 ![Language](https://img.shields.io/badge/language-C-blue.svg) 
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg) 
-![Build](https://img.shields.io/badge/build-Makefile-orange.svg)  
+![Build](https://img.shields.io/badge/build-Makefile-orange.svg) 
 ![CI](https://github.com/NoellaButi/code-tiny-shell/actions/workflows/ci.yml/badge.svg?branch=main)
 
 ---
@@ -69,4 +69,5 @@ code-tiny-shell/
 MIT (see LICENSE)
 
 ---
+
 
