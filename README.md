@@ -66,8 +66,6 @@ code-tiny-shell/
 - Add colored prompt themes
 
 ## 📜 License
-MIT (see LICENSE)
+MIT (see [LICENSE](LICENSE))
 
 ---
-
-
