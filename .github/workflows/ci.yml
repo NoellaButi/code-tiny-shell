@@ -1,4 +1,5 @@
 name: CI
+
 on: [push, pull_request]
 
 jobs:
@@ -17,10 +18,10 @@ jobs:
         run: |
           set -euxo pipefail
           if grep -qE '^[[:space:]]*clean:' Makefile; then make clean || true; fi
-          # Try a verbose build if your Makefile supports it; fall back to plain make
+          # Try a verbose build if supported; fall back to plain make
           ( make VERBOSE=1 ) || make
           echo "---- build tree ----"
-          find . -maxdepth 2 -type f -perm -111 -print || true
+          find . -maxdepth 3 -type f -perm -111 -print || true
           echo "--------------------"
 
       - name: Locate binary
@@ -28,7 +29,6 @@ jobs:
         shell: bash
         run: |
           set -e
-          # Try common locations
           CANDIDATES=(
             "./mysh"
             "./bin/mysh"
@@ -40,7 +40,6 @@ jobs:
           for c in "${CANDIDATES[@]}"; do
             if [[ -x "$c" ]]; then BIN="$c"; break; fi
           done
-          # If still not found, search
           if [[ -z "$BIN" ]]; then
             BIN=$(find . -maxdepth 3 -type f -name 'mysh' -perm -111 | head -n1 || true)
           fi
@@ -55,29 +54,27 @@ jobs:
 
       - name: Smoke test 1 — start, run pwd, exit
         run: |
-          set -e
+          set -euo pipefail
           BIN="${{ steps.bin.outputs.BIN }}"
           # Feed two commands then exit; timeout prevents hangs
-          script -q -e -c "timeout 5s bash -lc 'printf \"pwd\nexit\n\" | \"$BIN\"'" /dev/null | head -n 50 || true
-          # Re-run capturing exit code & output for assertions
-          set -o pipefail
-          timeout 5s bash -lc 'printf "pwd\nexit\n" | "$BIN"' > out1.txt 2>&1 || (echo "Shell run failed"; cat out1.txt; exit 1)
-          # Check it printed a path somewhere
-          grep -E "^/|^\." out1.txt >/dev/null || (echo "::error::pwd output not observed"; sed -n '1,80p' out1.txt; exit 1)
+          timeout 5s bash -lc "printf 'pwd\nexit\n' | \"$BIN\"" > out1.txt 2>&1 || (echo 'Shell run failed' && cat out1.txt && exit 1)
+          # Check for any path-like line from pwd output
+          grep -E '^/|^\.' out1.txt >/dev/null || (echo '::error::pwd output not observed'; sed -n '1,120p' out1.txt; exit 1)
 
       - name: Smoke test 2 — alias + redirection
         run: |
-          set -e
+          set -euo pipefail
           BIN="${{ steps.bin.outputs.BIN }}"
-          timeout 5s bash -lc 'printf "alias hi=\"echo hello\"\nhi\necho 123 > /tmp/ts_out.txt\nexit\n" | "$BIN"' > out2.txt 2>&1 || (cat out2.txt; exit 1)
-          grep -q "^hello$" out2.txt || (echo "::error::alias did not execute"; sed -n '1,80p' out2.txt; exit 1)
+          timeout 5s bash -lc "printf 'alias hi=\"echo hello\"\nhi\necho 123 > /tmp/ts_out.txt\nexit\n' | \"$BIN\"" > out2.txt 2>&1 || (cat out2.txt; exit 1)
+          grep -q '^hello$' out2.txt || (echo '::error::alias did not execute'; sed -n '1,120p' out2.txt; exit 1)
           test -f /tmp/ts_out.txt
-          grep -q "^123$" /tmp/ts_out.txt
+          grep -q '^123$' /tmp/ts_out.txt
 
       - name: Smoke test 3 — pipe & which
         run: |
-          set -e
+          set -euo pipefail
           BIN="${{ steps.bin.outputs.BIN }}"
-          timeout 5s bash -lc 'printf "echo aa | tr a A\nwhich sh\nexit\n" | "$BIN"' > out3.txt 2>&1 || (cat out3.txt; exit 1)
-          grep -q "^AA$" out3.txt || (echo "::error::pipe failed"; sed -n '1,80p' out3.txt; exit 1)
-          grep -E "/bin/sh|/usr/bin/sh" out3.txt >/dev/null || (echo "::warning::which sh not found in PATH"; sed -n '1,80p' out3.txt; true)
+          timeout 5s bash -lc "printf 'echo aa | tr a A\nwhich sh\nexit\n' | \"$BIN\"" > out3.txt 2>&1 || (cat out3.txt; exit 1)
+          grep -q '^AA$' out3.txt || (echo '::error::pipe failed'; sed -n '1,120p' out3.txt; exit 1)
+          # which output may vary by distro; warn (non-fatal) if not found
+          grep -E '/bin/sh|/usr/bin/sh' out3.txt >/dev/null || (echo '::warning::which sh not found in PATH'; sed -n '1,120p' out3.txt; true)
