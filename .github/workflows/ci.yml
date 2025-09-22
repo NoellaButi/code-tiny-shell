@@ -1,0 +1,44 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build deps (gcc, make, readline)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libreadline-dev
+
+      - name: Build
+        run: make
+
+      # Optional: if you add a `make test` target in the future, this will run it.
+      - name: Run Makefile tests (if present)
+        run: |
+          if grep -qE '^[[:space:]]*test:' Makefile; then
+            make test
+          else
+            echo "No test target; running smoke tests instead."
+          fi
+
+      # Smoke test 1: can mysh start, run a simple external command, then exit?
+      - name: Smoke test: run pwd then exit
+        run: |
+          set -e
+          timeout 5s bash -lc 'printf "pwd\nexit\n" | ./mysh' > out1.txt 2>&1 || (cat out1.txt && exit 1)
+          # Show a few lines for debugging context
+          tail -n +1 out1.txt | sed -n '1,50p'
+
+      # Smoke test 2: built-ins (alias / unalias) + redirection
+      - name: Smoke test: built-ins and redirection
+        run: |
+          set -e
+          timeout 5s bash -lc 'printf "alias ll=\"ls -la\"\nunalias ll\necho hello > /tmp/ts_out.txt\nexit\n" | ./mysh' > out2.txt 2>&1 || (cat out2.txt && exit 1)
+          test -f /tmp/ts_out.txt
+          grep -q "^hello$" /tmp/ts_out.txt
+          tail -n +1 out2.txt | sed -n '1,50p'
